@@ -17,12 +17,10 @@
 #' @return A solved landUse portfolio ready for export or further data processing.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-#'                  col_names = FALSE)
-#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #' init <- initScenario(dat, uValue = 2,
 #'                      optimisticRule = "expectation",
-#'                      fixDistance = NULL)
+#'                      fixDistance = 3)
 #' result <- solveScenario(x = init)
 #'
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity

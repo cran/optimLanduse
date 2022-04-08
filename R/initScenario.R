@@ -11,8 +11,6 @@
 #' basis of a coefficients table. Please note that the coefficients table must follow
 #' the \emph{optimLanduse} format. The expected format is explained in the example on
 #'  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
-#'  Usage of \code{\link{dataPreparation}} is recommended to ensure that
-#'  the format requirements are met.
 #'
 #'  The aim of separating the initialization from the optimization is to save
 #'  computation time in batch analysis. The separated function calls allow the
@@ -36,7 +34,7 @@
 #' these two variables reflects the uncertainty space, in other words the
 #' distance. This table can always be found (no matter if the distance is fixed
 #' or not) in result list of the \emph{initScenario} function. By default, the
-#' distance is not fixed \emph{NULL}. Fixing the distance allows you to change
+#' distance is fixed on 3 \emph{fixDistnce = 3}. Fixing the distance allows you to change
 #' the uncertainty level, without changing the uncertainty framework. For
 #' instance, you can then relate the achieved portfolio performance, with a low
 #' uncertainty level, to a wider and constant uncertainty framework within your
@@ -45,20 +43,19 @@
 #' @return An initialized optimLanduse S3 object ready for optimization.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-#'                  col_names = FALSE)
-#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
+#'
 #' init <- initScenario(dat,
 #'                      uValue = 2,
 #'                      optimisticRule = "expectation",
-#'                      fixDistance = NULL)
+#'                      fixDistance = 3)
 
 #' @import dplyr
 #' @import tidyr
 #' @importFrom stats setNames
 #'
 #' @export
-initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = NULL) {
+initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = 3) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -115,14 +112,14 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   scenarioTableTemp2 <- scenarioTable
 
   spread1 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorUncertainty"],
-                    key = landUse,
-                    value = "indicatorValue")
+                           key = landUse,
+                           value = "indicatorValue")
   names(spread1)[names(spread1) %in% eval(landUse)] <- paste0("mean", names(spread1)[names(spread1) %in% eval(landUse)])
 
 
   spread2 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorValue"],
-                     key = landUse,
-                     value = "indicatorUncertainty")
+                           key = landUse,
+                           value = "indicatorUncertainty")
   names(spread2)[names(spread2) %in% eval(landUse)] <- paste0("sem", names(spread2)[names(spread2) %in% eval(landUse)])
 
 
@@ -144,37 +141,24 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
 
   scenarioTableTemp3 <- scenarioTable
 
+  # add Adjusted SEM to the scenarioTable
 
-  newColumnNames <- paste0("adjSem", landUse)
-  scenarioTable[, newColumnNames] <- NA # Initialise empty
+  scenarioTable <- addAdjSEM(scenarioTable = scenarioTable, landUse = landUse,
+                             uValue = uValue, optimisticRule = optimisticRule)
 
-  for(i in landUse) {
-    # Ugly. But fast and less error-prone
-    scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] +
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
 
-    scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] -
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
-
-    if(optimisticRule == "uncertaintyAdjustedExpectation") {
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] -
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] +
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-    }
-    if(optimisticRule == "expectation") {
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-    }
+  if (!(fixDistance >=0 & fixDistance <= 10)  & !is.na(fixDistance)) {
+    fixDistance <- NA
+    warning("The fixDistance did not meet the requirements and therefore set to NA. Please find the possible values for the fixDistance in the help.")
   }
+
+  if ((fixDistance >=0 & fixDistance <= 10)  & !is.na(fixDistance)) {
+    scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3,
+                                  landUse = landUse,
+                                  uValue = fixDistance,
+                                  optimisticRule = optimisticRule)
+  }
+
 
   if(!optimisticRule %in% c("uncertaintyAdjustedExpectation", "expectation")) {cat("optimisticRule must be uncertaintyAdjustedExpectation or expectation")}
   if(!dim(scenarioTableTemp3)[1] == dim(scenarioTable)[1] | any(is.na(scenarioTable))) {cat("Error: Calculation of adjusted uncertainty.")}
@@ -182,16 +166,26 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   #--------------------------#
   ## calculate Min Max Diff ##
   #--------------------------#
-  if(is.null(fixDistance)){
+
+
+  if (is.na(fixDistance)) {
     scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
       apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
-  } else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
-             length(fixDistance)==2) {
-    scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
-    scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
-  } else {stop(paste("The dimension of the 'fixDistance' (min and max) must contain: 2 columns and",
-                     dim(scenarioTable)[1], "rows."))}
+  } else {
+    scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+      apply(scenarioTableFix[, startsWith(names(scenarioTableFix), "adjSem")], 1,
+            function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+
+    # scenarioTableFix[, c("minAdjSem", "maxAdjSem")] <-
+    #   apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+    #       function(x) {c(min(x), max(x))}) %>% t()
+    #scenarioTable <- scenarioTableFix
+  } # Das könnte noch eleganter sein! tbd
+
+
+
+
 
 
   #-------------------------------------------------------------#
@@ -208,7 +202,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   constraintCoefficients <- defineConstraintCoefficients(scenarioTable)
 
   retList <- list(scenarioSettings = data.frame(uValue = uValue,
-                              optimisticRule = optimisticRule, stringsAsFactors = FALSE),
+                                                optimisticRule = optimisticRule, stringsAsFactors = FALSE),
                   scenarioTable = scenarioTable,
                   coefObjective = coefObjective,
                   coefConstraint = constraintCoefficients,
@@ -217,7 +211,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
                   beta = NA,
                   landUse = setNames(data.frame(matrix(rep(NA, length(landUse)), ncol = length(landUse), nrow = 1)), landUse),
                   optimDetails = list()
-)
+  )
   class(retList) <- "optimLanduse"
   return(retList)
 }

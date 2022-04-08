@@ -16,7 +16,7 @@ error or "SD" for standard deviation.}
 \item{expVAL}{Indicates the column name of the expected value.}
 }
 \value{
-A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
+A formatted coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
 }
 \description{
 The input data must suit to the specific expected optimLanduse format prior to
@@ -32,7 +32,6 @@ provides information about the expected structure. Incomplete rows with NA-value
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-                 col_names = FALSE)
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_xlsx(exampleData("exampleGosling_dataPrep.xlsx"), col_names = TRUE)
+dat <- dataPreparation(dat, uncertainty = "sd", expVAL = "mean")
 }

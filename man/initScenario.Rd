@@ -8,7 +8,7 @@ initScenario(
   coefTable,
   uValue = 1,
   optimisticRule = "expectation",
-  fixDistance = NULL
+  fixDistance = 3
 )
 }
 \arguments{
@@ -31,7 +31,7 @@ scenario, which is influenced by the \emph{uValue}. The difference between
 these two variables reflects the uncertainty space, in other words the
 distance. This table can always be found (no matter if the distance is fixed
 or not) in result list of the \emph{initScenario} function. By default, the
-distance is not fixed \emph{NULL}. Fixing the distance allows you to change
+distance is fixed on 3 \emph{fixDistnce = 3}. Fixing the distance allows you to change
 the uncertainty level, without changing the uncertainty framework. For
 instance, you can then relate the achieved portfolio performance, with a low
 uncertainty level, to a wider and constant uncertainty framework within your
@@ -46,8 +46,6 @@ The function initializes an \emph{optimLanduse} S3 object on the
 basis of a coefficients table. Please note that the coefficients table must follow
 the \emph{optimLanduse} format. The expected format is explained in the example on
  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
- Usage of \code{\link{dataPreparation}} is recommended to ensure that
- the format requirements are met.
 }
 \details{
 The aim of separating the initialization from the optimization is to save
@@ -58,11 +56,10 @@ The aim of separating the initialization from the optimization is to save
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-                 col_names = FALSE)
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
+
 init <- initScenario(dat,
                      uValue = 2,
                      optimisticRule = "expectation",
-                     fixDistance = NULL)
+                     fixDistance = 3)
 }

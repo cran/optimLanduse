@@ -28,12 +28,10 @@
 #' require(ggplot2)
 #' require(readxl)
 #'
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-#'                  col_names = FALSE)
-#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #' init <- initScenario(dat, uValue = 2,
 #'                      optimisticRule = "expectation",
-#'                      fixDistance = NULL)
+#'                      fixDistance = 3)
 #' result <- solveScenario(x = init)
 #' performance <- calcPerformance(result)
 #'
