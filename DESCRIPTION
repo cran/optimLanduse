@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 1.1.0
+Version: 1.1.2
 Authors@R: 
     c(
     person(given = "Kai",
@@ -37,7 +37,7 @@ Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>=
 Suggests: readxl, ggplot2
 URL: https://github.com/Forest-Economics-Goettingen/optimLanduse/
 NeedsCompilation: no
-Packaged: 2022-08-16 15:15:19 UTC; kai
+Packaged: 2022-11-17 16:42:25 UTC; kai
 Author: Kai Husmann [aut, cre] (<https://orcid.org/0000-0003-2970-4709>),
   Volker von Groß [aut] (<https://orcid.org/0000-0001-7372-0066>),
   Jasper Fuchs [aut] (<https://orcid.org/0000-0001-5951-7897>),
@@ -47,4 +47,4 @@ Author: Kai Husmann [aut, cre] (<https://orcid.org/0000-0003-2970-4709>),
   TUM School of Life Sciences - Forest Management [cph, fnd]
 Maintainer: Kai Husmann <kai.husmann@uni-goettingen.de>
 Repository: CRAN
-Date/Publication: 2022-08-17 07:00:06 UTC
+Date/Publication: 2022-11-17 16:50:02 UTC

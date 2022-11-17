@@ -8,16 +8,17 @@
 #' Attach portfolio performance and distance to target
 #'
 #' The Portfolio performances are calculated and attached to the solved
-#' optimLanduse object. Each performance measure describes the relative proportion to the maximum achievable
-#' (the "target") of the indicator, given the current solution. The lowest performance of all indicators
-#' is the degree of fulfillment of the worst performing
-#' indicator. It can thus be interpreted as the guaranteed performance
-#' under the worst-possible scenario. At least this proportion will be
-#' achieved across all indicators.
+#' optimLanduse object. Each performance measure describes the relative
+#' proportion to the maximum achievable (the "target") of the indicator,
+#' given the current land use distribution and the uncertainty scenario set.
+#' The lowest performing scenario of all indicators is the degree of minimal
+#' fulfillment under the worst-possible outcome.
+#' It can thus be interpreted as the guaranteed performance.
+#' At least this proportion will be achieved across all indicators.
 #'
 #' For further information and calculation, see the supplement of Gosling et al. (2020),
 #' Formula S5 (in the supplement of the paper) and also the paragraph
-#' optimLanduse functions and workflow - Post-processing in Husmann et al. (n. d.).
+#' optimLanduse functions and workflow - Post-processing in Husmann et al. (2020).
 #'
 #' @param x An optimized optimLanduse object.
 #' @return An optimized optimLanduse object with attached portfolio performance.
@@ -25,9 +26,7 @@
 #' farmer perceptions of agroforestry via multi-objective optimisation: a test application
 #' in Eastern Panama. \emph{Agroforestry Systems} \strong{94}. \doi{10.1007/s10457-020-00519-0}
 #'
-#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
-#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
-#' in Ecology and Management}. Under review.
+#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 #'
 #' @examples
 #' require(ggplot2)
