@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 1.1.2
+Version: 1.2.0
 Authors@R: 
     c(
     person(given = "Kai",
@@ -31,13 +31,13 @@ Authors@R:
 Description: Robust multi-criteria land-allocation optimization that explicitly accounts for the uncertainty of the indicators in the objective function. Solves the problem of allocating scarce land to various land-use options with regard to multiple, coequal indicators. The method aims to find the land allocation that represents the indicator composition with the best possible trade-off under uncertainty. optimLanduse includes the actual optimization procedure as described by Knoke et al. (2016) <doi:10.1038/ncomms11877> and the post-hoc calculation of the portfolio performance as presented by Gosling et al. (2020) <doi:10.1016/j.jenvman.2020.110248>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>=
-        1.0.0)
+        1.0.0), future (>= 1.28.0), future.apply (>= 1.9.0)
 Suggests: readxl, ggplot2
 URL: https://github.com/Forest-Economics-Goettingen/optimLanduse/
 NeedsCompilation: no
-Packaged: 2022-11-17 16:42:25 UTC; kai
+Packaged: 2023-08-31 04:51:37 UTC; kai
 Author: Kai Husmann [aut, cre] (<https://orcid.org/0000-0003-2970-4709>),
   Volker von Groß [aut] (<https://orcid.org/0000-0001-7372-0066>),
   Jasper Fuchs [aut] (<https://orcid.org/0000-0001-5951-7897>),
@@ -47,4 +47,4 @@ Author: Kai Husmann [aut, cre] (<https://orcid.org/0000-0003-2970-4709>),
   TUM School of Life Sciences - Forest Management [cph, fnd]
 Maintainer: Kai Husmann <kai.husmann@uni-goettingen.de>
 Repository: CRAN
-Date/Publication: 2022-11-17 16:50:02 UTC
+Date/Publication: 2023-08-31 05:10:02 UTC
