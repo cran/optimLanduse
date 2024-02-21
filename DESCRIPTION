@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: 
     c(
     person(given = "Kai",
@@ -23,6 +23,16 @@ Authors@R:
            role = "aut",
            email = "kai.boedeker@tum.de",
            comment = c(ORCID = "0000-0002-5307-5108")),
+    person(given = "Carola",
+           family = "Paul",
+           role = "aut",
+           email = "carola.paul@uni-goettingen.de",
+           comment = c(ORCID = "0000-0002-6257-2026")),
+    person(given = "Thomas",
+           family = "Knoke",
+           role = "aut",
+           email = "knoke@tum.de",
+           comment = c(ORCID = "0000-0003-0535-5946")),
    person("Goettingen University - Forest Economics and Sustainable Land-use Planning",
            role=c("cph", "fnd")),
    person("TUM School of Life Sciences - Forest Management",
@@ -37,14 +47,16 @@ Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>=
 Suggests: readxl, ggplot2
 URL: https://github.com/Forest-Economics-Goettingen/optimLanduse/
 NeedsCompilation: no
-Packaged: 2023-08-31 04:51:37 UTC; kai
+Packaged: 2024-02-21 14:59:14 UTC; khusman1
 Author: Kai Husmann [aut, cre] (<https://orcid.org/0000-0003-2970-4709>),
   Volker von Groß [aut] (<https://orcid.org/0000-0001-7372-0066>),
   Jasper Fuchs [aut] (<https://orcid.org/0000-0001-5951-7897>),
   Kai Bödeker [aut] (<https://orcid.org/0000-0002-5307-5108>),
+  Carola Paul [aut] (<https://orcid.org/0000-0002-6257-2026>),
+  Thomas Knoke [aut] (<https://orcid.org/0000-0003-0535-5946>),
   Goettingen University - Forest Economics and Sustainable Land-use
     Planning [cph, fnd],
   TUM School of Life Sciences - Forest Management [cph, fnd]
 Maintainer: Kai Husmann <kai.husmann@uni-goettingen.de>
 Repository: CRAN
-Date/Publication: 2023-08-31 05:10:02 UTC
+Date/Publication: 2024-02-21 15:10:02 UTC
